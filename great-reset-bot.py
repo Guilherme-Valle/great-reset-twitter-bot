@@ -9,6 +9,10 @@ consumer_secret = os.environ.get('TWITTER_API_RESET_CONSUMER_SECRET')
 access_token = os.environ.get('TWITTER_API_RESET_ACCESS_TOKEN')
 access_token_secret = os.environ.get('TWITTER_API_RESET_ACCESS_TOKEN_SECRET')
 logf = open("errors.log", "w")
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
+
 
 class greatResetListener(tweepy.StreamListener):
     def __init__(self, api):
@@ -22,16 +26,22 @@ class greatResetListener(tweepy.StreamListener):
             except Exception as exception:
                 logf.write(exception.response.text)
 
+    def on_exception(self, exception):
+        logf.write(exception.response.text)
+        start_stream()
 
-try:
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
+
+def start_stream():
     tweets_listener = greatResetListener(api)
     stream = tweepy.Stream(api.auth, tweets_listener)
-    stream.filter(track=["Great Reset", "Grande Reset", "great reset", "grande reset", "Klaus Schwab", "Fórum econômico mundial",
-                         "Você não terá nada e será feliz",
-                         "Fórum econômico", "Comer insetos"], languages=["pt"])
+    stream.filter(
+        track=["Great Reset", "Grande Reset", "great reset", "grande reset", "Klaus Schwab", "Fórum econômico mundial",
+               "Você não terá nada e será feliz",
+               "Fórum econômico", "Comer insetos"], languages=["pt"])
+
+
+try:
+    start_stream()
 
 except tweepy.TweepError as e:
     logf.write(e.response.text)
