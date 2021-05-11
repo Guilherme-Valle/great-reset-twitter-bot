@@ -2,12 +2,15 @@
 import tweepy
 import sys
 import os
+from importlib import reload
+
 
 consumer_key = os.environ.get('TWITTER_API_RESET_CONSUMER_KEY')
 consumer_secret = os.environ.get('TWITTER_API_RESET_CONSUMER_SECRET')
 access_token = os.environ.get('TWITTER_API_RESET_ACCESS_TOKEN')
 access_token_secret = os.environ.get('TWITTER_API_RESET_ACCESS_TOKEN_SECRET')
 logf = open("errors.log", "w")
+reload(sys)
 sys.setdefaultencoding('utf8')
 
 class greatResetListener(tweepy.StreamListener):
