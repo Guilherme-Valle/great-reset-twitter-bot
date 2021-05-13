@@ -32,6 +32,7 @@ class greatResetListener(tweepy.StreamListener):
 
 
 def start_stream():
+    print('Start streaming')
     tweets_listener = greatResetListener(api)
     stream = tweepy.Stream(api.auth, tweets_listener)
     stream.filter(
