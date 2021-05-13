@@ -15,6 +15,7 @@ api = tweepy.API(auth)
 
 
 class greatResetListener(tweepy.StreamListener):
+    print('entrou no listener')
     def __init__(self, api):
         self.api = api
         self.me = api.me()
@@ -27,6 +28,7 @@ class greatResetListener(tweepy.StreamListener):
                 logf.write(exception.response.text)
 
     def on_exception(self, exception):
+        print(exception)
         logf.write(exception.response.text)
         start_stream()
 
