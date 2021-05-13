@@ -45,6 +45,7 @@ try:
     start_stream()
 
 except tweepy.TweepError as e:
+    print(e)
     logf.write(e.response.text)
 except tweepy.RateLimitError:
     logf.write("RATELIMITERROR")
